@@ -3,6 +3,7 @@ package com.web101.todolistapp.controller;
 import com.web101.todolistapp.dto.ResponseDTO;
 import com.web101.todolistapp.dto.UserDTO;
 import com.web101.todolistapp.model.UserEntity;
+import com.web101.todolistapp.security.TokenProvider;
 import com.web101.todolistapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     ResponseEntity<?> registerUer(@RequestBody UserDTO userDTO){
@@ -50,10 +54,13 @@ public class UserController {
         );
 
         if(user != null) {
+            final String token = tokenProvider.create(user);
+
             final UserDTO responseUserDto = UserDTO.builder()
                     .email(user.getEmail())
                     .userName(user.getUsername())
                     .id(user.getId())
+                    .token(token)
                     .build();
             return ResponseEntity.ok().body(responseUserDto);
         }else{
