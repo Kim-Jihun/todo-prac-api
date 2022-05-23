@@ -1,6 +1,5 @@
 package com.web101.todolistapp.service;
 
-import com.sun.tools.javac.comp.Todo;
 import com.web101.todolistapp.model.TodoEntity;
 import com.web101.todolistapp.persistence.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
